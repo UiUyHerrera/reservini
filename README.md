@@ -4,6 +4,8 @@ Reservini is a booking tool for small businesses such as barbers, tutors or ther
 
 The app is available in English and Spanish, and supports any time zone and currency.
 
+> ¿Primera vez? Mirá la **[Guía rápida en español](docs/GUIA.md)**, con capturas paso a paso.
+
 ## Features
 
 - Owner accounts with registration, login and logout.
