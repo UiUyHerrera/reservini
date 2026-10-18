@@ -1,54 +1,54 @@
 # Reservini
 
-Reservini is a booking tool for small businesses such as barbers, tutors or therapists. The owner sets up services and opening hours, shares a public booking page, and clients pick a free time.
+Reservas online para negocios chicos: barberías, profes particulares, consultorios. El dueño carga sus servicios y su horario, comparte el link de su página y los clientes eligen una hora libre sin tener que escribirle.
 
-The app is available in English and Spanish, and supports any time zone and currency.
+La app está en español e inglés y funciona con cualquier zona horaria y moneda.
 
-> ¿Primera vez? Mirá la **[Guía rápida en español](docs/GUIA.md)**, con capturas paso a paso.
+> Si es la primera vez que la usás, la [guía rápida](docs/GUIA.md) la recorre paso a paso con capturas.
 
-## Features
+![Página pública de reservas](docs/05-pagina-reservas.jpg)
 
-- Owner accounts with registration, login and logout.
-- Business profile with a public address, time zone, currency and weekly opening hours. Hours are edited by dragging blocks on a weekly grid or by typing them as text.
-- Services with a length and a price. Services can be edited, hidden or deleted.
-- Public booking page with the next two weeks of free times, filters by day and time of day, and protection against double bookings.
-- Confirmation email after booking and a reminder email on the morning of the booking.
-- Owner dashboard with upcoming bookings and cancellation, which notifies the client by email.
-- Free plan limited to 20 bookings a month and a Pro plan without a limit. Switching plans is a demo and takes no payment.
-- Light and dark mode.
+## Qué hace
 
-## Stack
+- Cuentas para dueños de negocio, con registro e inicio de sesión.
+- Perfil del negocio con dirección pública, zona horaria, moneda y horario semanal. El horario se arma arrastrando bloques en una grilla o escribiéndolo como texto.
+- Servicios con duración y precio, que se pueden editar, ocultar o borrar.
+- Página pública con las horas libres de las próximas dos semanas, filtros por día y franja horaria, y control para que nadie tome una hora ya reservada.
+- Mail de confirmación al reservar y recordatorio la mañana de la reserva.
+- Panel con las próximas reservas. Si el dueño cancela una, el cliente recibe un mail.
+- Plan Free con 20 reservas por mes y plan Pro sin límite. El cambio de plan es de demostración y no cobra nada.
+- Modo claro y modo oscuro.
 
-- Python 3.14 and Flask
-- SQLAlchemy with SQLite for development and PostgreSQL in production
-- Flask-Login, Flask-WTF, Flask-Limiter and Flask-Babel
-- Plain HTML and CSS, with two small JavaScript files for the hours editor and the booking filters
-- pytest
+## Con qué está hecha
 
-## Run locally
+Python y Flask, con SQLAlchemy sobre SQLite en desarrollo y PostgreSQL en producción. Flask-Login maneja las sesiones, Flask-WTF los formularios y el CSRF, Flask-Limiter frena los intentos repetidos y Flask-Babel las traducciones. El frontend es HTML y CSS, con un poco de JavaScript para el editor de horarios y los filtros de la página de reservas. Los tests son con pytest.
+
+## Correrla en tu máquina
+
+Necesitás Python 3.12 o más nuevo.
 
 ```bash
 python -m venv .venv
-.venv/Scripts/activate
+.venv\Scripts\activate
 pip install -r requirements-dev.txt
-cp .env.example .env
+copy .env.example .env
 ```
 
-Set `SECRET_KEY` in `.env` to a long random value:
+En macOS o Linux el entorno se activa con `source .venv/bin/activate` y el archivo se copia con `cp`.
+
+En `.env` poné un `SECRET_KEY` largo y aleatorio. Podés generarlo así:
 
 ```bash
 python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
-Start the server. The database is created on the first start:
+Después arrancá el servidor. La base se crea sola la primera vez:
 
 ```bash
 flask run
 ```
 
-The app runs at http://127.0.0.1:5000.
-
-Emails are only sent when the `MAIL_*` settings in `.env` point to an SMTP server. Without them, the app logs that the email was skipped.
+Queda en http://127.0.0.1:5000. Los mails solo salen si completás los `MAIL_*` de `.env` con un servidor SMTP; si no, la app anota en el log que se saltó el envío.
 
 ## Tests
 
@@ -56,9 +56,11 @@ Emails are only sent when the `MAIL_*` settings in `.env` point to an SMTP serve
 python -m pytest
 ```
 
-## Translations
+Son 83 tests y corren en GitHub Actions en cada push.
 
-Texts are written in English in the code and translated in `reservini/translations/es/LC_MESSAGES/messages.po`. After changing texts:
+## Traducciones
+
+Los textos están en inglés en el código y la traducción vive en `reservini/translations/es/LC_MESSAGES/messages.po`. Después de cambiar textos:
 
 ```bash
 pybabel extract -F babel.cfg -k _l -o messages.pot .
@@ -66,20 +68,18 @@ pybabel update -i messages.pot -d reservini/translations
 pybabel compile -d reservini/translations
 ```
 
-## Reminders
+## Recordatorios
 
-`flask send-reminders` sends the reminder emails that are due. It can run more often than needed without sending the same reminder twice.
+`flask send-reminders` manda los recordatorios pendientes. Se puede correr las veces que quieras: nunca manda dos veces el mismo.
 
-In production, Vercel calls `/tasks/send-reminders` once a day. The route only runs when the request carries the `CRON_SECRET` value.
+En producción, Vercel llama una vez por día a `/tasks/send-reminders`. Esa ruta solo responde si el request trae el valor de `CRON_SECRET`.
 
-## Deploy
+## Publicarla
 
-The app runs on Vercel with a PostgreSQL database on Neon.
+Está preparada para Vercel con una base PostgreSQL en Neon:
 
-1. Import the repository in Vercel.
-2. Connect a Neon database from the Storage tab, which adds `DATABASE_URL`.
-3. Add these environment variables: `SECRET_KEY`, `CRON_SECRET`, `TRUST_PROXY=1` and, to send emails, the `MAIL_*` values.
+1. Importá el repositorio en Vercel.
+2. Conectá una base de Neon desde la pestaña Storage, que agrega `DATABASE_URL`.
+3. Agregá `SECRET_KEY`, `CRON_SECRET`, `TRUST_PROXY=1` y, si querés mandar mails, los `MAIL_*`.
 
-The tables are created on the first start.
-
-`api/index.py` is the entry point on Vercel, and `vercel.json` sets the region and schedules the daily reminders.
+Las tablas se crean en el primer arranque. `api/index.py` es la entrada en Vercel y `vercel.json` define la región y el cron de los recordatorios.
