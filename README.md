@@ -1,45 +1,45 @@
 # Reservini
 
-Reservas online para negocios chicos: barberías, profes particulares, consultorios. El dueño carga sus servicios y su horario, comparte el link de su página y los clientes eligen una hora libre sin tener que escribirle.
+Online booking for small businesses: barbers, private tutors, clinics. The owner sets up their services and opening hours, shares the link to their page, and clients pick a free slot without having to message them.
 
-La app está en español e inglés, funciona con cualquier zona horaria y trae doce monedas, peso uruguayo incluido.
+The app comes in English and Spanish, works in any time zone and supports twelve currencies, Uruguayan peso included.
 
-> Si es la primera vez que la usás, la [guía rápida](docs/GUIA.md) la recorre paso a paso con capturas.
+> First time using it? The [quick start guide](docs/GUIA.md) (in Spanish) walks through it step by step with screenshots.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/reservar-oscuro.png">
-  <img src="docs/capturas/reservar.png" alt="Página donde el cliente elige día y hora para un corte de pelo">
+  <img src="docs/capturas/reservar.png" alt="Booking page where a client picks a day and time for a haircut">
 </picture>
 
-## Qué hace
+## Features
 
-- Cuentas para dueños de negocio, con registro e inicio de sesión.
-- Perfil del negocio con dirección pública, zona horaria, moneda y horario semanal. El horario se arma día por día, con un interruptor y menús de hora, o escribiéndolo como texto.
-- Servicios con duración y precio, que se pueden editar, ocultar o borrar.
-- Página pública con las horas libres de las próximas dos semanas, filtros por día y franja horaria, y control para que nadie tome una hora ya reservada.
-- Mail de confirmación al reservar y recordatorio la mañana de la reserva.
-- Panel con las próximas reservas. Si el dueño cancela una, el cliente recibe un mail.
-- Plan Free con 20 reservas por mes y plan Pro sin límite. El cambio de plan es de demostración y no cobra nada.
-- Modo claro y modo oscuro.
+- Accounts for business owners, with sign-up and login.
+- A business profile with a public address, time zone, currency and weekly opening hours. Hours are set day by day with a switch and time menus, or typed in as text.
+- Services with a length and a price that can be edited, hidden or deleted.
+- A public page with the free slots for the next two weeks, filters by day and time of day, and a check so nobody takes a slot that's already booked.
+- A confirmation email when booking and a reminder on the morning of the appointment.
+- A dashboard with upcoming bookings. When the owner cancels one, the client gets an email.
+- A Free plan with 20 bookings a month and a Pro plan with no limit. Switching plans is a demo and charges nothing.
+- Light and dark mode.
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/panel-oscuro.png">
-    <img src="docs/capturas/panel.png" width="49%" alt="Panel del negocio con el plan, las próximas reservas y los servicios">
+    <img src="docs/capturas/panel.png" width="49%" alt="Business dashboard with the plan, upcoming bookings and services">
   </picture>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/horarios-oscuro.png">
-    <img src="docs/capturas/horarios.png" width="49%" alt="Editor del horario de atención, día por día">
+    <img src="docs/capturas/horarios.png" width="49%" alt="Opening hours editor, one day at a time">
   </picture>
 </p>
 
-## Con qué está hecha
+## Built with
 
-Python y Flask, con SQLAlchemy sobre SQLite en desarrollo y PostgreSQL en producción. Flask-Login maneja las sesiones, Flask-WTF los formularios y el CSRF, Flask-Limiter frena los intentos repetidos y Flask-Babel las traducciones. El frontend es HTML y CSS, con un poco de JavaScript para el editor de horarios y los filtros de la página de reservas. Los tests son con pytest.
+Python and Flask, with SQLAlchemy on SQLite in development and PostgreSQL in production. Flask-Login handles sessions, Flask-WTF forms and CSRF, Flask-Limiter slows down repeated attempts, and Flask-Babel the translations. The frontend is plain HTML and CSS, with a bit of JavaScript for the hours editor and the booking page filters. Tests use pytest.
 
-## Correrla en tu máquina
+## Running it locally
 
-Necesitás Python 3.12 o más nuevo.
+You need Python 3.12 or newer.
 
 ```bash
 python -m venv .venv
@@ -48,21 +48,21 @@ pip install -r requirements-dev.txt
 copy .env.example .env
 ```
 
-En macOS o Linux el entorno se activa con `source .venv/bin/activate` y el archivo se copia con `cp`.
+On macOS or Linux, activate the environment with `source .venv/bin/activate` and copy the file with `cp`.
 
-En `.env` poné un `SECRET_KEY` largo y aleatorio. Podés generarlo así:
+Set a long random `SECRET_KEY` in `.env`. You can generate one with:
 
 ```bash
 python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
-Después arrancá el servidor. La base se crea sola la primera vez:
+Then start the server. The database is created on the first run:
 
 ```bash
 flask run
 ```
 
-Queda en http://127.0.0.1:5000. Los mails solo salen si completás los `MAIL_*` de `.env` con un servidor SMTP; si no, la app anota en el log que se saltó el envío.
+It runs at http://127.0.0.1:5000. Emails are only sent when the `MAIL_*` settings in `.env` point to an SMTP server; otherwise the app logs that it skipped them.
 
 ## Tests
 
@@ -70,11 +70,11 @@ Queda en http://127.0.0.1:5000. Los mails solo salen si completás los `MAIL_*` 
 python -m pytest
 ```
 
-Son 83 tests y corren en GitHub Actions en cada push.
+There are 83 tests, and GitHub Actions runs them on every push.
 
-## Traducciones
+## Translations
 
-Los textos están en inglés en el código y la traducción vive en `reservini/translations/es/LC_MESSAGES/messages.po`. Después de cambiar textos:
+Texts are written in English in the code, and the Spanish translation lives in `reservini/translations/es/LC_MESSAGES/messages.po`. After changing texts:
 
 ```bash
 pybabel extract -F babel.cfg -k _l -o messages.pot .
@@ -82,18 +82,18 @@ pybabel update -i messages.pot -d reservini/translations
 pybabel compile -d reservini/translations
 ```
 
-## Recordatorios
+## Reminders
 
-`flask send-reminders` manda los recordatorios pendientes. Se puede correr las veces que quieras: nunca manda dos veces el mismo.
+`flask send-reminders` sends the reminders that are due. You can run it as often as you like: it never sends the same one twice.
 
-En producción, Vercel llama una vez por día a `/tasks/send-reminders`. Esa ruta solo responde si el request trae el valor de `CRON_SECRET`.
+In production, Vercel calls `/tasks/send-reminders` once a day. The route only answers when the request carries the `CRON_SECRET` value.
 
-## Publicarla
+## Deploying
 
-Está preparada para Vercel con una base PostgreSQL en Neon:
+It's ready for Vercel with a PostgreSQL database on Neon:
 
-1. Importá el repositorio en Vercel.
-2. Conectá una base de Neon desde la pestaña Storage, que agrega `DATABASE_URL`.
-3. Agregá `SECRET_KEY`, `CRON_SECRET`, `TRUST_PROXY=1` y, si querés mandar mails, los `MAIL_*`.
+1. Import the repository in Vercel.
+2. Connect a Neon database from the Storage tab, which adds `DATABASE_URL`.
+3. Add `SECRET_KEY`, `CRON_SECRET`, `TRUST_PROXY=1` and, to send emails, the `MAIL_*` values.
 
-Las tablas se crean en el primer arranque. `api/index.py` es la entrada en Vercel y `vercel.json` define la región y el cron de los recordatorios.
+Tables are created on the first start. `api/index.py` is the Vercel entry point, and `vercel.json` sets the region and the reminders cron.
