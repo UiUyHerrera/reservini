@@ -2,22 +2,36 @@
 
 Reservas online para negocios chicos: barberías, profes particulares, consultorios. El dueño carga sus servicios y su horario, comparte el link de su página y los clientes eligen una hora libre sin tener que escribirle.
 
-La app está en español e inglés y funciona con cualquier zona horaria y moneda.
+La app está en español e inglés, funciona con cualquier zona horaria y trae doce monedas, peso uruguayo incluido.
 
 > Si es la primera vez que la usás, la [guía rápida](docs/GUIA.md) la recorre paso a paso con capturas.
 
-![Página pública de reservas](docs/05-pagina-reservas.jpg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/reservar-oscuro.png">
+  <img src="docs/capturas/reservar.png" alt="Página donde el cliente elige día y hora para un corte de pelo">
+</picture>
 
 ## Qué hace
 
 - Cuentas para dueños de negocio, con registro e inicio de sesión.
-- Perfil del negocio con dirección pública, zona horaria, moneda y horario semanal. El horario se arma arrastrando bloques en una grilla o escribiéndolo como texto.
+- Perfil del negocio con dirección pública, zona horaria, moneda y horario semanal. El horario se arma día por día, con un interruptor y menús de hora, o escribiéndolo como texto.
 - Servicios con duración y precio, que se pueden editar, ocultar o borrar.
 - Página pública con las horas libres de las próximas dos semanas, filtros por día y franja horaria, y control para que nadie tome una hora ya reservada.
 - Mail de confirmación al reservar y recordatorio la mañana de la reserva.
 - Panel con las próximas reservas. Si el dueño cancela una, el cliente recibe un mail.
 - Plan Free con 20 reservas por mes y plan Pro sin límite. El cambio de plan es de demostración y no cobra nada.
 - Modo claro y modo oscuro.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/panel-oscuro.png">
+    <img src="docs/capturas/panel.png" width="49%" alt="Panel del negocio con el plan, las próximas reservas y los servicios">
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/capturas/horarios-oscuro.png">
+    <img src="docs/capturas/horarios.png" width="49%" alt="Editor del horario de atención, día por día">
+  </picture>
+</p>
 
 ## Con qué está hecha
 
