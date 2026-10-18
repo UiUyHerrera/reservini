@@ -37,7 +37,7 @@ from reservini.models import OpeningHours
 PASSWORD_MIN_LENGTH = 8
 PASSWORD_MAX_LENGTH = 128
 SLUG_PATTERN = r"^[a-z0-9]+(-[a-z0-9]+)*$"
-CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "MXN", "BRL", "ARS", "COP", "PEN"]
+CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "MXN", "BRL", "ARS", "CLP", "COP", "PEN", "UYU"]
 DEFAULT_HOURS = ["09:00-18:00"] * 5 + ["", ""]
 TIMEZONES = {
     "America/Los_Angeles": _l("United States, Pacific"),
